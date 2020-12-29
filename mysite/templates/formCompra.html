@@ -1,0 +1,14 @@
+{% extends 'baseForms.html' %}
+{% block content %}
+    <form method="POST">
+        <h1>CONFIRMAR COMPRA</h1>
+        <div class="login" >
+
+            {{form.as_p}}
+            {% csrf_token%}
+        <button type="submit" id="btn">Confirmar</button>
+        </div>
+        <a href="/homeTienda/" class="link">CANCELAR</a>
+
+    </form>
+{% endblock %}
