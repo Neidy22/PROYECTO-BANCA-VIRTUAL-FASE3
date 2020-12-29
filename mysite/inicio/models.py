@@ -1,6 +1,10 @@
-from django.db import models
-
-# Create your models here.
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
 
@@ -59,6 +63,20 @@ class Clienteindividual(models.Model):
         managed = False
         db_table = 'clienteindividual'
         unique_together = (('codigo', 'cui', 'nit'),)
+
+
+class Compra(models.Model):
+    fecha = models.DateField(blank=True, null=True)
+    descripcion = models.CharField(max_length=200, blank=True, null=True)
+    monto = models.FloatField(blank=True, null=True)
+    codigo_tarjeta = models.ForeignKey('Tarjetacredito', models.DO_NOTHING, db_column='codigo_tarjeta', blank=True, null=True)
+    moneda = models.CharField(max_length=1, blank=True, null=True)
+    puntos = models.FloatField(blank=True, null=True)
+    cashback = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'compra'
 
 
 class Cuentaahorro(models.Model):
@@ -131,6 +149,19 @@ class Prestamo(models.Model):
         unique_together = (('id', 'codigo_usuario'),)
 
 
+class Tarjetacredito(models.Model):
+    codigo_usuario = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='codigo_usuario', blank=True, null=True)
+    marca = models.CharField(max_length=50, blank=True, null=True)
+    limite = models.FloatField(blank=True, null=True)
+    moneda = models.CharField(max_length=1, blank=True, null=True)
+    puntos = models.FloatField(blank=True, null=True)
+    porcentaje = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tarjetacredito'
+
+
 class Tarjetadebito(models.Model):
     codigo_usuario = models.IntegerField()
     fondo = models.FloatField(blank=True, null=True)
@@ -146,6 +177,7 @@ class Usuario(models.Model):
     codigoi = models.ForeignKey(Clienteindividual, models.DO_NOTHING, db_column='codigoI')  # Field name made lowercase.
     usuario = models.CharField(max_length=150, blank=True, null=True)
     contrasenia = models.CharField(max_length=100, blank=True, null=True)
+    tarjetas = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False

@@ -17,12 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from inicio.views import Home,Index,Admin
+from inicio.views import Home,Index,Admin,Empre
 
 urlpatterns = [
 
-    path ('home', Home.decirHola, name = 'home'),
+    path ('individual', Home.decirHola, name = 'individual'),
     path('menuAd', Admin.enviar, name='menuAd'),
-    path ('', Index.indexView, name = 'index'),
+    path ('index/', Index.indexView, name = 'index'),
+    path('empresarial',Empre.enviar, name='empresarial')
 
 ]

@@ -65,6 +65,20 @@ class Clienteindividual(models.Model):
         unique_together = (('codigo', 'cui', 'nit'),)
 
 
+class Compra(models.Model):
+    fecha = models.DateField(blank=True, null=True)
+    descripcion = models.CharField(max_length=200, blank=True, null=True)
+    monto = models.FloatField(blank=True, null=True)
+    codigo_tarjeta = models.ForeignKey('Tarjetacredito', models.DO_NOTHING, db_column='codigo_tarjeta', blank=True, null=True)
+    moneda = models.CharField(max_length=1, blank=True, null=True)
+    puntos = models.FloatField(blank=True, null=True)
+    cashback = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'compra'
+
+
 class Cuentaahorro(models.Model):
     codigo_usuario = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='codigo_usuario')
     fondo = models.FloatField(blank=True, null=True)

@@ -1,0 +1,14 @@
+{% extends 'baseFondo.html' %}
+{% block content %}
+    <form method="POST">
+        <h1>REALIZAR COMPRA CON TARJETA DE CREDITO</h1>
+        <div class="login" >
+
+            {{form.as_p}}
+            {% csrf_token%}
+        <button type="submit" id="btn">COMPRAR</button>
+        </div>
+        <a href="../home/" class="link">SALIR DE LA TIENDA</a>
+
+    </form>
+{% endblock %}

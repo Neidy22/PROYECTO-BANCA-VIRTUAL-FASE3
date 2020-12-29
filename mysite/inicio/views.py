@@ -34,7 +34,7 @@ class Index(TemplateView):
         if request.method == 'POST':
             form = Persona(data=request.POST)
             itemsPost = request.POST.items()
-            print('este es el itempost')
+         #   print('este es el itempost')
             diccionarioSesion = {}
             usuario = ''
             contrasenia = ''
@@ -57,31 +57,31 @@ class Index(TemplateView):
 
                     return redirect('menuAd')
 
-            else:
+            #else:
 
 
-                try:
-                    per=Usuario.objects.get(id=codigo)
-                    p=per.contrasenia
-                    u=per.usuario
-                    codigoe=per.codigoe
-                    print(codigoe)
-                    codigoi=per.codigoi
 
-                    if  u==usuario:
-                        if p==contrasenia:
+            per=Usuario.objects.get(id=codigo)
+            p=per.contrasenia
+            u=per.usuario
+            codigoe=per.codigoe.codigo
+            codigoi=per.codigoi.codigo
+            print(codigoe,codigoi)
+            if  u==usuario:
+                if p==contrasenia:
+                    diccionarioSesion.update(usuario=usuario,contrasenia=contrasenia,codigo=codigo)
+                    print(diccionarioSesion)
+                    variableSesion = request.session['datos'] = diccionarioSesion
+                    form=Persona()
+                    if codigoe>0:
+                        return redirect('empresarial')
+                    elif codigoi>0:
+                        return redirect('individual')
 
 
-                            diccionarioSesion.update(usuario=usuario,contrasenia=contrasenia,codigo=codigo)
-                            print(diccionarioSesion)
-                            variableSesion = request.session['datos'] = diccionarioSesion
-                            form=Persona()
+                    else:
+                        return  redirect('index')
 
-                            return redirect('home')
-                        else:
-                            return  redirect('index')
-                except Usuario.DoesNotExist:
-                    return False
 
         return render(request, 'index.html', {'form': form})
 
@@ -98,6 +98,17 @@ class Home(TemplateView):
 
         return render(request, 'inicioCliente.html', {'codigo': codigo, 'usuario': usuario, 'contrasenia':contrasenia})
 
+class Empre(TemplateView):
+    template_name = "menuEmpresarial.html"
+    def enviar(request):
+        diccionarioSesion = request.session['datos']
+        codigo = diccionarioSesion.get('codigo')
+        usuario = diccionarioSesion.get('usuario')
+        contrasenia = diccionarioSesion.get('contrasenia')
+
+        return render(request, 'menuEmpresarial.html', {'codigo': codigo, 'usuario': usuario, 'contrasenia': contrasenia})
+
+
 class Admin(TemplateView):
     template_name = "menuAdmin.html"
 
@@ -107,27 +118,10 @@ class Admin(TemplateView):
         usuario = diccionarioSesion.get('usuario')
         contrasenia = diccionarioSesion.get('contrasenia')
 
-        cl = Clienteempresarial.objects.get(id=codigoe)
-        nombre = cl.nombre_empresa
-        nombrec = cl.nombre_comercial
-        tipo = cl.tipo
-        representante = cl.nombre_representate
-        direccion = cl.direccion
-        tel = cl.telefono
 
-        mone = Cuentamonetaria.objects.filter(codigo_usuario=codigo).values_list("id","fondo","monto_manejo","moneda")
-        ahor = Cuentaahorro.objects.filter(codigo_usuario=codigo).values_list("id","fondo","tasa_interes","moneda")
-        fija = Cuentafija.objects.filter(codigo_usuario=codigo).values_list("id","tasa_interes","fondo_total","moneda")
         variables={
-            'Nombre':nombre,
-            'Nombrec':nombrec,
-            'Tipo':tipo,
-            'Representante':representante,
-            'Dirección':direccion,
-            'Teléfono':tel,
-            'Monetarias':mone,
-            'Ahorros':ahor,
-            'Fijas':fija
+            'Nombre':codigo,
+
 
         }
 
