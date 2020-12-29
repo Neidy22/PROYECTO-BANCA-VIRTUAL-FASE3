@@ -1,0 +1,14 @@
+{% extends 'baseFondo.html' %}
+{% block content %}
+    <form method="POST">
+        <h1>REALIZAR DEPOSITOS</h1>
+        <div class="login" >
+
+            {{form.as_p}}
+            {% csrf_token%}
+        <button type="submit" id="btn">Depositar</button>
+        </div>
+        <a href="../admin/" class="link">REGRESAR</a>
+
+    </form>
+{% endblock %}

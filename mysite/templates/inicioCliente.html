@@ -1,0 +1,105 @@
+{% extends 'baseFondo.html' %}
+{% block content %}
+
+
+        <br>
+        <h1>BIENVENIDO {{usuario}}</h1>
+        <div class="cajon">
+            <h2>MIS DATOS</h2>
+                {{Nombre}}
+                {{Nombrec}}
+                {{Tipo}}
+                {{Representante}}
+                {{Dirección}}
+                {{Teléfono}}
+                {{Monetarias}}
+                {{Ahorros}}
+                {{Fijas}}
+
+
+
+
+
+
+        </div>
+        <div class="cajon">
+            <h2>MIS CUENTAS</h2>
+            <h3>MONETARIAS</h3>
+            <table>
+                <tr>
+
+                    <th>Id</th>
+                    <th>Fondo</th>
+                    <th>Monto por manejo</th>
+                    <th>Moneda</th>
+
+                </tr>
+        {% for a,b,c,d in Monetarias %}
+                <tr>
+                    <td>{{a}}</td>
+                    <td>{{b}}</td>
+                    <td>{{c}}</td>
+                    <td>{{d}}</td>
+
+
+                </tr>
+        {% endfor %}
+            </table>
+            <br>
+
+             <h3>DE AHORRO</h3>
+            <table>
+                <tr>
+
+                    <th>Id</th>
+                    <th>Fondo</th>
+                    <th>Tasa de interés</th>
+                    <th>Moneda</th>
+
+                </tr>
+        {% for a,b,c,d in Ahorros %}
+                <tr>
+                    <td>{{a}}</td>
+                    <td>{{b}}</td>
+                    <td>{{c}}</td>
+                    <td>{{d}}</td>
+
+
+                </tr>
+        {% endfor %}
+            </table>
+            <br>
+
+            <h3>DE AHORRO A PLAZO FIJO</h3>
+            <table>
+                <tr>
+
+                    <th>Id</th>
+                    <th>Fondo</th>
+                    <th>Tasa de interés</th>
+                    <th>Moneda</th>
+
+                </tr>
+        {% for a,b,c,d in Fijas %}
+                <tr>
+                    <td>{{a}}</td>
+                    <td>{{b}}</td>
+                    <td>{{c}}</td>
+                    <td>{{d}}</td>
+
+
+                </tr>
+        {% endfor %}
+            </table>
+            <br>
+
+
+
+
+        </div>
+
+        <br>
+
+
+
+{% endblock %}

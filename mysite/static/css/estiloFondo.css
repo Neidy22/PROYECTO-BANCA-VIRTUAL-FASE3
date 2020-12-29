@@ -1,0 +1,67 @@
+body{
+background:url('../img/fondoDoble.gif');
+background-repeat: no-repeat;
+background-size: cover;
+}
+
+h1{
+text-align:center;
+color: white;
+font-size:xx-large;
+font:900;
+font-style:oblique;
+
+}
+.link{
+text-align:center;
+color: white;
+font-size:xx-large;
+font:900;
+font-style:oblique;
+margin-top:600px;
+}
+
+
+
+
+.login {
+background-color:#43c2c130;
+border-style:inset;
+margin-top:100px;
+width:25%;
+margin-left:37.5%;
+color:#ffffff;
+font-size:larger;
+font:600;
+font-style:italic;
+text-align:rigth
+
+}
+
+#btn{
+background-color:#369e97;
+border-color:aliceblue;
+text-align:center;
+text-emphasis-color:aquamarine;
+width:25%;
+height:30px;
+margin-left:40%;
+margin-down:10px;
+color:white;
+font-size:10px;
+font-family:Verdana,Helvetica;
+font-weight:bold;
+}
+
+
+.cajon{
+background-color:#2AB39730;
+width:50%;
+margin-left:25%;
+margin-top:10px;
+color:white;
+font-size:larger;
+font:600;
+font-style:italic;
+
+}

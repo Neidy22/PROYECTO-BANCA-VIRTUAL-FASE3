@@ -1,0 +1,17 @@
+{% extends 'baseForms.html' %}
+{% block content %}
+    <form method="POST">
+         <h1>CREACIÓN DE CUENTAS DE AHORRO</h1>
+        <div class="login">
+
+            {{form.as_p}}
+            {% csrf_token%}
+
+
+       <a href="/admin/" > <button type="submit" id="btn" >Crear cuenta nueva</button></a>
+
+        </div>
+        <a href="../admin/" class="link">REGRESAR</a>
+    </form>
+
+{% endblock %}
