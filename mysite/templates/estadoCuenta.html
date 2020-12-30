@@ -1,0 +1,134 @@
+{% extends 'baseFondo.html' %}
+{% block content %}
+<div class="log">
+    <h1>PRESTAMOS</h1>
+            <table class="tbl">
+
+
+                <tr>
+                    <th>Id préstamo</th>
+                    <th>Monto solicitado</th>
+                    <th>Interés</th>
+                    <th>Monto cancelado</th>
+
+
+                </tr>
+
+            {% for a,b,c,d in prestamos %}
+                <tr>
+                    <td>{{a}}</td>
+                    <td>{{b}}</td>
+                    <td>{{c}}</td>
+                    <td>{{d}}</td>
+
+                </tr>
+
+
+            {% endfor%}
+
+
+            </table>
+        </div>
+        <div class="log">
+            <h1>PAGOS AUTOMATICOS</h1>
+            <table class="tbl">
+
+
+                    <tr>
+                        <th>Id pago</th>
+                        <th>Id préstamo</th>
+                        <th>Fecha</th>
+                        <th>Monto cuota</th>
+                        <th>Monto restante</th>
+
+
+                    </tr>
+
+                {% for a,b,c,d,e in pagosAuto %}
+                    <tr>
+                        <td>{{a}}</td>
+                        <td>{{b}}</td>
+                        <td>{{c}}</td>
+                        <td>{{d}}</td>
+                        <td>{{e}}</td>
+
+                    </tr>
+
+                {% endfor%}
+
+
+                </table>
+
+        </div>
+         <div class="log">
+            <h1>PAGOS ADELANTADOS</h1>
+            <table class="tbl">
+
+
+                    <tr>
+                        <th>Id</th>
+                        <th>Fecha</th>
+                        <th>Monto cuota</th>
+                        <th>Monto restante</th>
+
+
+                    </tr>
+
+                {% for a,b,c,d in pagosAd %}
+                    <tr>
+                        <td>{{a}}</td>
+                        <td>{{b}}</td>
+                        <td>{{c}}</td>
+                        <td>{{d}}</td>
+
+                    </tr>
+
+                {% endfor%}
+
+
+                </table>
+
+        </div>
+         <div class="log">
+            <h1>COMPRAS</h1>
+            <table class="tbl">
+
+
+                    <tr>
+                        <th>Id</th>
+                        <th>Fecha</th>
+                        <th>Descripción</th>
+                        <th>Monto</th>
+                        <th>Moneda</th>
+                        <th>Puntos</th>
+                        <th>Chashback</th>
+
+
+
+                    </tr>
+
+                {% for a,b,c,d,e,f,g in compras %}
+                    <tr>
+                        <td>{{a}}</td>
+                        <td>{{b}}</td>
+                        <td>{{c}}</td>
+                        <td>{{d}}</td>
+                        <td>{{e}}</td>
+                        <td>{{f}}</td>
+                        <td>{{g}}</td>
+
+                    </tr>
+
+                {% endfor%}
+
+
+                </table>
+
+        </div>
+
+
+
+        <a href="../index/" class="link">REGRESAR</a>
+
+    </form>
+{% endblock %}

@@ -5,7 +5,7 @@ from .forms import *
 import MySQLdb
 import sys
 
-from .models import Usuario, Prestamo, Pagoautomatico
+from .models import Usuario, Prestamo, Pagoautomatico,Pagoadelantado,Tarjetacredito,Compra
 
 
 sys.path.append("models.py")
@@ -128,6 +128,46 @@ class Admin(TemplateView):
 
 
         return render(request, 'menuAdmin.html', variables)
+
+class estadoCuenta(TemplateView):
+    template_name = "estadoCuenta.html"
+
+    def enviar(request):
+        diccionarioSesion=request.session['datos']
+        codigo=diccionarioSesion.get('codigo')
+        prestamos=Prestamo.objects.filter(codigo_usuario=codigo).values_list('id','monto','interes','pagado')
+        pagosAuto=Pagoautomatico.objects.filter(codigo_usuario=codigo).values_list('id','id_prestamo','fecha','cuota','restante')
+        pagosAd=[]
+        compras=[]
+
+
+
+
+        tarjetas=Tarjetacredito.objects.filter(codigo_usuario=codigo).values_list()
+
+
+        for a,b,c,d,e in pagosAuto:
+
+            pagosAd=Pagoadelantado.objects.filter(id_pagoauto=a).values_list("id","fecha","cuota","restante")
+
+        for a,b,c,d,e,f,g in tarjetas:
+            compras=Compra.objects.filter(codigo_tarjeta=a).values_list("id","fecha","descripcion","monto","moneda","puntos","cashback")
+
+
+
+
+        variables={
+            'prestamos':prestamos,
+            'pagosAuto':pagosAuto,
+            'pagosAd':pagosAd,
+            'tarjetas':tarjetas,
+            'compras':compras
+        }
+        return render(request, 'estadoCuenta.html', variables)
+
+
+
+
 
 class soli(TemplateView):
     template_name = "prestamo.html"
@@ -573,6 +613,8 @@ def cotizar(monto):
         lista[i]=round(lista[i],2)
 
     return lista
+
+
 
 
 
