@@ -25,8 +25,8 @@ def registroCliente(request):
             codigo=datos.get("codigo")
             cui=datos.get("cui")
             nit=datos.get("nit")
-            nombre=datos.get("primer_nombre")
-            apellido=datos.get("primer_apellido")
+            nombre=datos.get("nombre")
+            #apellido=datos.get("primer_apellido")
             nacimiento=datos.get("nacimiento")
 
             email=datos.get("email")
@@ -36,7 +36,7 @@ def registroCliente(request):
 
             db= MySQLdb.connect(host=host, user=user, password=contra, db=db_name, connect_timeout=5)
             c=db.cursor()
-            consulta="INSERT INTO clienteIndividual VALUES("+str(codigo)+","+str(cui)+","+str(nit)+",'"+str(nombre)+"','"+str(apellido)+"','"+str(nacimiento)+"','"+email+"',"+str(telefono)+")"
+            consulta="INSERT INTO clienteIndividual VALUES("+str(codigo)+","+str(cui)+","+str(nit)+",'"+str(nombre)+"','"+str(nacimiento)+"','"+email+"',"+str(telefono)+")"
             c.execute(consulta)
             db.commit()
             c.close()
@@ -48,7 +48,7 @@ def registroCliente(request):
             }
             tarjeta=0
             contrau=codigo+nit
-            asignarUsuario(0,0,codigo,apellido,contrau,tarjeta)
+            asignarUsuario(0,0,codigo,nombre,contrau,tarjeta)
         else:
             nombre="Ya existe un cliente con los mismos datos"
             variables= {
@@ -130,13 +130,14 @@ def crearCuentaMonetaria(request):
         form = cuentaMonetaria2(data=request.POST)
         if form.is_valid():
             datos = form.cleaned_data
+            id=datos.get("id")
             codigo=datos.get("codigo_usuario")
             fondo=datos.get("fondo")
             manejo=datos.get("monto_manejo")
             moneda=datos.get("moneda")
             estado=datos.get("estado")
             auto=datos.get("pre_auto")
-            id=0
+            #id=0
             ch=0
 
 

@@ -53,8 +53,7 @@ class Clienteindividual(models.Model):
     codigo = models.IntegerField(primary_key=True)
     cui = models.BigIntegerField()
     nit = models.IntegerField()
-    primer_nombre = models.CharField(max_length=100, blank=True, null=True)
-    primer_apellido = models.CharField(max_length=100, blank=True, null=True)
+    nombre = models.CharField(max_length=100, blank=True, null=True)
     nacimiento = models.DateField(blank=True, null=True)
     email = models.CharField(max_length=150, blank=True, null=True)
     telefono = models.BigIntegerField(blank=True, null=True)
@@ -111,6 +110,7 @@ class Cuentafija(models.Model):
 
 
 class Cuentamonetaria(models.Model):
+    id = models.IntegerField(primary_key=True)
     codigo_usuario = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='codigo_usuario')
     fondo = models.FloatField(blank=True, null=True)
     monto_manejo = models.FloatField(blank=True, null=True)
@@ -135,6 +135,31 @@ class Deposito(models.Model):
     class Meta:
         managed = False
         db_table = 'deposito'
+
+
+class Pagoadelantado(models.Model):
+    id_pagoauto = models.ForeignKey('Pagoautomatico', models.DO_NOTHING, db_column='id_pagoAuto', blank=True, null=True)  # Field name made lowercase.
+    fecha = models.DateField(blank=True, null=True)
+    cuota = models.FloatField(blank=True, null=True)
+    restante = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'pagoadelantado'
+
+
+class Pagoautomatico(models.Model):
+    codigo_usuario = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='codigo_usuario', blank=True, null=True)
+    tipo_cuenta = models.IntegerField(blank=True, null=True)
+    id_cuenta = models.IntegerField(blank=True, null=True)
+    id_prestamo = models.ForeignKey('Prestamo', models.DO_NOTHING, db_column='id_prestamo', blank=True, null=True)
+    fecha = models.DateField(blank=True, null=True)
+    cuota = models.FloatField(blank=True, null=True)
+    restante = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'pagoautomatico'
 
 
 class Prestamo(models.Model):

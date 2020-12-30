@@ -5,14 +5,14 @@ class clienteI(forms.ModelForm):
 
     class Meta:
         model = Clienteindividual
-        fields=("codigo", "cui","nit","primer_nombre","primer_apellido","nacimiento","nacimiento","email","telefono")
+        fields=("codigo", "cui","nit","nombre","nacimiento","nacimiento","email","telefono")
 
 class clienteIndividual2(forms.Form):
     codigo=forms.IntegerField(required=True, help_text="Solo puedes ingresar números")
     cui=forms.IntegerField(required=True, help_text="Solo puedes ingresar números")
     nit=forms.IntegerField(required=True, help_text="Solo puedes ingresar números")
-    primer_nombre = forms.CharField(max_length=50, help_text='Nombre del solicitante', required=True)
-    primer_apellido=forms.CharField(max_length=50, help_text='Apellido del solicitante', required=True)
+    nombre = forms.CharField(max_length=50, help_text='Nombre del solicitante', required=True)
+    #primer_apellido=forms.CharField(max_length=50, help_text='Apellido del solicitante', required=True)
     nacimiento = forms.DateField(help_text='Fecha de nacimiento', required=True)
     email = forms.EmailField(help_text='Correo electrónico', required=True)
     usuario = forms.CharField(max_length=50, help_text='Nombre de usuario', required=True)
@@ -47,6 +47,7 @@ class cuentaMonetaria(forms.ModelForm):
         fields=("id","codigo_usuario","fondo","monto_manejo","moneda","estado","pre_auto","cheques_disponibles")
 
 class cuentaMonetaria2(forms.Form):
+    id=forms.IntegerField(required=True, label="Número de cuenta")
     opciones=(("1","Activada"),("0","Desactivada"))
     codigo_usuario=forms.IntegerField(required=True,label="Código de usuario")
     fondo=forms.FloatField(required=True, label="Fondo")

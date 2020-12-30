@@ -20,3 +20,14 @@ class solicitudPrestamo(forms.Form):
 
     class Meta:
         field=("id","codigo_usuario","descripcion","monto","tiempo","estado")
+
+class pagoA(forms.Form):
+    opc=((1,"MONETARIA"),(2,"AHORRO"))
+    tipo_cuenta=forms.ChoiceField(required=True,label="Tipo de cuenta a utilizar:",choices=opc)
+    id_cuenta=forms.IntegerField(required=True,label="Número de cuenta:")
+    id_prestamo=forms.IntegerField(required=True,label="Código del prestamo:")
+    fecha=forms.DateField(required=True,label="Fecha:")
+    contra=forms.CharField(required=True,label="Contraseña")
+
+    class Meta:
+        field=("id","codigo_usuario","tipo_cuenta","id_cuenta","id_prestamo","fecha","cuota","restante")

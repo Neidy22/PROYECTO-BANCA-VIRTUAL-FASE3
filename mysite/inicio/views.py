@@ -5,7 +5,7 @@ from .forms import *
 import MySQLdb
 import sys
 
-from .models import Usuario, Clienteempresarial, Cuentamonetaria, Cuentaahorro, Cuentafija, Clienteindividual
+from .models import Usuario, Prestamo
 
 sys.path.append("models.py")
 
@@ -181,11 +181,146 @@ class soli(TemplateView):
         return render(request, 'prestamo.html', variables)
 
 
+class pagoAutomatico(TemplateView):
+    template_name = "cuotaAuto.html"
+
+    def pagar(request):
+        form =pagoA()
+        nombre = "Pagar automáticamente"
+        variables = {
+            "form": form,
+            "mensaje": nombre
+        }
+        if request.method == "POST":
+            form = pagoA(data=request.POST)
+            if form.is_valid():
+                datos = form.cleaned_data
+                tipo=datos.get("tipo_cuenta")
+                idCuenta=datos.get("id_cuenta")
+                prestamo=datos.get("id_prestamo")
+                fecha=datos.get("fecha")
+                passw=datos.get("contra")
+                diccionarioSesion = request.session['datos']
+                usuario = diccionarioSesion.get('codigo')
+                contrasenia=diccionarioSesion.get('contrasenia')
+                id=0
+
+
+                if passw==contrasenia:
+                    pres = Prestamo.objects.get(id=prestamo)
+                    total = pres.total
+                    tiempo = pres.modalidad_pago
+                    cuota = total / tiempo
+                    #debitarCuota(tipo,idCuenta,cuota)
+                    #actualizarMonto(tipo,idCuenta,cuota)
+
+                    #actualizarPrestamo(prestamo, cuota)
+
+                    #cancelado=pres.pagado
+                    #restante=total-cancelado
+
+                    insertarPagoA(id,usuario,tipo,idCuenta,prestamo,fecha,cuota,total)
+
+
+                    nombre = "Pago automático registrado!"
+                    form=pagoA()
+                    variables = {
+                        "form": form,
+                        "mensaje": nombre
+
+                    }
+                else:
+                    nombre = "La contraseña es incorrecta!"
+                    variables = {
+                        "form": form,
+                        "mensaje": nombre
+
+                    }
+
+
+
+            else:
+                nombre = "Ocurrión un error"
+                variables = {
+                    "form": form,
+                    "mensaje": nombre
+
+                }
+        return render(request, 'cuotaAuto.html', variables)
+
+
+def actualizarPrestamo(prestamo,cuota):
+    prest=Prestamo.objects.get(id=prestamo)
+    pagado=prest.pagado
+    pagos=pagado+cuota
+
+    db = MySQLdb.connect(host=host, user=user, password=contra, db=db_name, connect_timeout=5)
+    c = db.cursor()
+    consulta = "UPDATE prestamo SET pagado= '" + str(pagos) + "'  WHERE id=" + str(prestamo)
+    c.execute(consulta)
+    db.commit()
+    c.close()
+
+def obtenerCuotayRestante(prestamo):
+    pres=Prestamo.objects.get(id=prestamo)
+    total=pres.total
+    tiempo=pres.modalidad_pago
+    cuota=total/tiempo
+    restante=total-cuota
+    return cuota,restante
+
+def debitarCuota(tipo,cuenta,cuota):
+    if tipo==1:
+        cuenta=Cuentamonetaria.objects.get(id=cuenta)
+        moneda=cuenta.moneda
+        fondo=cuenta.fondo
+        saldo=calcularSaldo(moneda,fondo,cuota)
+        print(saldo)
+        if saldo>0:
+            db = MySQLdb.connect(host=host, user=user, password=contra, db=db_name, connect_timeout=5)
+            c = db.cursor()
+            consulta = "UPDATE cuentaMonetaria SET fondo= '" + str(saldo) + "'  WHERE id=" + str(cuenta)
+            c.execute(consulta)
+            db.commit()
+            c.close()
+
+
+
+
+    elif tipo==2:
+        cuenta=Cuentaahorro.objects.get(id=cuenta)
+        moneda=cuenta.moneda
+        fondo=cuenta.fondo
+        saldo=calcularSaldo(moneda,fondo,cuota)
+        if saldo > 0:
+            db = MySQLdb.connect(host=host, user=user, password=contra, db=db_name, connect_timeout=5)
+            c = db.cursor()
+            consulta = "UPDATE cuentaAhorro SET fondo= '" + str(saldo) + "' WHERE id=" + str(cuenta)
+            c.execute(consulta)
+            db.commit()
+            c.close()
+
+def calcularSaldo(moneda,fondo,cuota):
+    saldo=0
+    if moneda=="Q":
+        saldo=fondo-cuota
+    elif moneda=="$":
+        saldo=fondo-(cuota/7.63)
+    return saldo
 
 def insertarSolicitud(id,usuario,descripcion,monto,tiempo,estado):
     db = MySQLdb.connect(host=host, user=user, password=contra, db=db_name, connect_timeout=5)
     c = db.cursor()
     consulta = "INSERT INTO solicitudPrestamo VALUES(" + str(id) + ","+str(usuario)+",'"+str(descripcion)+"',"+str(monto)+","+str(tiempo)+","+str(estado)+")"
+    c.execute(consulta)
+    db.commit()
+    c.close()
+
+def insertarPagoA(id,usuario,tipoC,idC,idPre,fecha,cuota,restante):
+    db = MySQLdb.connect(host=host, user=user, password=contra, db=db_name, connect_timeout=5)
+    c = db.cursor()
+    consulta = "INSERT INTO pagoAutomatico VALUES(" + str(id) + "," + str(usuario) + ",'" + str(
+        tipoC) + "'," + str(idC) + "," + str(idPre) + ",'" + str(fecha) +"',"+str(cuota)+","+str(restante)+ ")"
     c.execute(consulta)
     db.commit()
     c.close()

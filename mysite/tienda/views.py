@@ -108,6 +108,7 @@ class Home(TemplateView):
                 marca=tarjetaU.marca
                 punt=tarjetaU.puntos
                 porc=tarjetaU.porcentaje
+                fondo=tarjetaU.limite
                 print(us)
                 print(type(us))
                 usuT=str(us)
@@ -123,7 +124,7 @@ class Home(TemplateView):
                         insertarCompra(id,fecha,desc,monto,cod_tarjeta,moneda,pts,prc)
                         punt=punt+pts
                         porc=porc+prc
-                        actualizarTarjeta(cod_tarjeta,punt,porc)
+                        actualizarTarjeta(cod_tarjeta,punt,porc,total,fondo)
 
                         nombre = "Compra exitosa"
                         form=compra()
@@ -302,8 +303,10 @@ def calcularPorcentajes(monto,moneda,ficha):
             porcentajes=(monto*0.05)/7.87
     return porcentajes
 
-def actualizarTarjeta(tarjeta,puntos,porcentajes):
+def actualizarTarjeta(tarjeta,puntos,porcentajes,monto,limite):
     porc=int(porcentajes)
+    saldo=limite-monto
+
     db = MySQLdb.connect(host=host, user=user, password=contra, db=db_name, connect_timeout=5)
     c = db.cursor()
     consulta = "UPDATE tarjetaCredito SET puntos= '" + str(puntos) + "' WHERE id=" + str(tarjeta)
@@ -313,6 +316,12 @@ def actualizarTarjeta(tarjeta,puntos,porcentajes):
     db = MySQLdb.connect(host=host, user=user, password=contra, db=db_name, connect_timeout=5)
     c = db.cursor()
     consulta = "UPDATE tarjetaCredito SET porcentaje= '" + str(porc) + "' WHERE id=" + str(tarjeta)
+    c.execute(consulta)
+    db.commit()
+    c.close()
+    db = MySQLdb.connect(host=host, user=user, password=contra, db=db_name, connect_timeout=5)
+    c = db.cursor()
+    consulta = "UPDATE tarjetaCredito SET limite= '" + str(saldo) + "' WHERE id=" + str(tarjeta)
     c.execute(consulta)
     db.commit()
     c.close()
