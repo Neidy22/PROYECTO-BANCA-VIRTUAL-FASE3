@@ -474,8 +474,6 @@ def generarTarjeta(request):
             }
     return render(request, 'tarjeta.html', variables)
 
-
-
 def tasaCambio(monto,moneda,cuenta,tipo):
     total=0
     tp=int(tipo)
@@ -679,7 +677,139 @@ def validarLimite(usuario,marca,monto,tarjetas,moneda):
 
     return aceptado
 
+def autorizarPrestamo(request):
+    form = autorizar()
+    soli=Solicitudprestamo.objects.filter(estado=0).values_list()
+    nombre = "Autorizar prestamos"
+    variables = {
+        "form": form,
+        "mensaje": nombre,
+        "soli":soli
+    }
+    if request.method == "POST":
+        form = autorizar(data=request.POST)
+        if form.is_valid():
+            datos = form.cleaned_data
+            codigo=datos.get("id")
+            estado=datos.get("estado")
 
+            if estado=='1':
+
+                pres=Solicitudprestamo.objects.get(id=codigo)
+                monto=pres.monto
+                tiempo=pres.tiempo
+                usuario=pres.codigo_usuario.id
+                pagado=0
+                interes,total=intereses(monto,tiempo)
+                pagarPrestamo(codigo,usuario,monto,tiempo,interes,total,pagado)
+
+                db = MySQLdb.connect(host=host, user=user, password=contra, db=db_name, connect_timeout=5)
+                c = db.cursor()
+                consulta = "UPDATE solicitudPrestamo SET estado= '" + str(estado) + "'  WHERE id=" + str(codigo)
+                c.execute(consulta)
+                db.commit()
+                c.close()
+
+                nombre = "Préstamo autorizado"
+                form = autorizar()
+                variables = {
+                    "form": form,
+                    "mensaje": nombre,
+                    "soli":soli
+                }
+
+        else:
+            nombre = "Ocurrió un error"
+            variables = {
+                "form": form,
+                "mensaje": nombre,
+                "soli":soli
+
+            }
+    return render(request, 'autorizarPrestamo.html', variables)
+
+def pagarPrestamo(id,usuario,monto,tiempo,interes,total,pagado):
+    db = MySQLdb.connect(host=host, user=user, password=contra, db=db_name, connect_timeout=5)
+    c = db.cursor()
+    consulta = "INSERT INTO prestamo VALUES (" + str(id) + "," + str(usuario) + "," + str(monto) + "," + str(
+        tiempo) + "," + str(interes) +","+str(total)+","+str(pagado)+ ")"
+    c.execute(consulta)
+    db.commit()
+    c.close()
+
+def intereses(monto,tiempo):
+    interes=0
+    total=0
+    if monto>=1000 and monto<=5000:
+        if tiempo==12:
+            interes=5
+            total = monto + ((monto / tiempo) * 0.05)*tiempo
+        elif tiempo==24:
+            interes = 4
+            total = monto + ((monto / tiempo) * 0.04)*tiempo
+        elif tiempo==36:
+            interes = 3.35
+            total = monto + ((monto / tiempo) * 0.0335)*tiempo
+        elif tiempo==48:
+            interes = 2.5
+            total = monto + ((monto / tiempo) * 0.025)*tiempo
+    elif monto>=5000.01 and monto<=15000:
+        if tiempo==12:
+            interes=5.25
+            total = monto + ((monto / tiempo) * 0.0525)*tiempo
+        elif tiempo==24:
+            interes = 4.15
+            total = monto + ((monto / tiempo) * 0.0415)*tiempo
+        elif tiempo==36:
+            interes = 3.50
+            total = monto + ((monto / tiempo) * 0.0350)*tiempo
+        elif tiempo==48:
+            interes = 2.60
+            total = monto + ((monto / tiempo) * 0.026)*tiempo
+    elif monto >= 15000.01 and monto <= 30000:
+        if tiempo==12:
+            interes=5.30
+            total = monto + ((monto / tiempo) * 0.0530)*tiempo
+        elif tiempo==24:
+            interes = 4.20
+            total = monto + ((monto / tiempo) * 0.042)*tiempo
+        elif tiempo==36:
+            interes = 3.55
+            total = monto + ((monto / tiempo) * 0.0355)*tiempo
+        elif tiempo==48:
+            interes = 2.65
+            total = monto + ((monto / tiempo) * 0.0265)*tiempo
+    elif monto >= 30000.01 and monto <= 60000:
+        if tiempo==12:
+            interes=5.35
+            total = monto + ((monto / tiempo) * 0.0535)*tiempo
+        elif tiempo==24:
+            interes = 4.25
+            total = monto + ((monto / tiempo) * 0.0425)*tiempo
+        elif tiempo==36:
+            interes = 3.60
+            total = monto + ((monto / tiempo) * 0.0360)*tiempo
+        elif tiempo==48:
+            interes = 2.70
+            total = monto + ((monto / tiempo) * 0.0270) * tiempo
+    elif monto >= 60000.01:
+        if tiempo==12:
+            interes=5.45
+            total = monto + ((monto / tiempo) * 0.0545)*tiempo
+        elif tiempo==24:
+            interes = 4.35
+            total = monto + ((monto / tiempo) * 0.0435)*tiempo
+        elif tiempo==36:
+            interes = 3.70
+            total = monto + ((monto / tiempo) * 0.0370)*tiempo
+        elif tiempo==48:
+            interes = 2.80
+            total = monto + ((monto / tiempo) * 0.028)*tiempo
+
+    total=round(total,2)
+
+
+    return interes,total
 
 
 

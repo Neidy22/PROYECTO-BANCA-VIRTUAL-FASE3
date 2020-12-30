@@ -1,0 +1,46 @@
+{% extends 'baseFondo.html' %}
+{% block content %}
+<div class="log">
+    <h1>TABLA DE SOLICITUDES DE PRESTAMOS</h1>
+            <table class="tbl">
+                <tr>
+                    <th>Id solicitud</th>
+                    <th>Id cliente</th>
+                    <th>Descripción</th>
+                    <th>Monto solicitado</th>
+                    <th>Tiempo en meses</th>
+                    <th>Estado de la solicitud</th>
+
+                </tr>
+
+            {% for a,b,c,d,e,f in soli%}
+                <tr>
+                    <td>{{a}}</td>
+                    <td>{{b}}</td>
+                    <td>{{c}}</td>
+                    <td>{{d}}</td>
+                    <td>{{e}}</td>
+                    <td>{{f}}</td>
+                </tr>
+            {% endfor%}
+
+
+            </table>
+        </div>
+
+
+    <form method="POST">
+        <h1>APROBAR PRESTAMO</h1>
+        <div class="login" >
+             {{mensaje}}
+            {{form.as_p}}
+            {% csrf_token%}
+
+        <button type="submit" id="btn">APROBAR</button>
+
+        </div>
+
+        <a href="../admin/" class="link">REGRESAR</a>
+
+    </form>
+{% endblock %}

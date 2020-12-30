@@ -146,11 +146,12 @@ class soli(TemplateView):
                 monto = datos.get("monto")
                 tiempo = datos.get("tiempo")
                 id = 0
+                estado=0
                 print(tiempo, type(tiempo))
                 diccionarioSesion = request.session['datos']
                 usuario = diccionarioSesion.get('codigo')
                 if tiempo != '0':
-                    insertarSolicitud(id, usuario, descripcion, monto, tiempo)
+                    insertarSolicitud(id, usuario, descripcion, monto, tiempo,estado)
                     nombre = "Solicitud enviada"
                     form = solicitudPrestamo()
                     variables = {
@@ -181,10 +182,10 @@ class soli(TemplateView):
 
 
 
-def insertarSolicitud(id,usuario,descripcion,monto,tiempo):
+def insertarSolicitud(id,usuario,descripcion,monto,tiempo,estado):
     db = MySQLdb.connect(host=host, user=user, password=contra, db=db_name, connect_timeout=5)
     c = db.cursor()
-    consulta = "INSERT INTO solicitudPrestamo VALUES(" + str(id) + ","+str(usuario)+",'"+str(descripcion)+"',"+str(monto)+","+str(tiempo)+")"
+    consulta = "INSERT INTO solicitudPrestamo VALUES(" + str(id) + ","+str(usuario)+",'"+str(descripcion)+"',"+str(monto)+","+str(tiempo)+","+str(estado)+")"
     c.execute(consulta)
     db.commit()
     c.close()

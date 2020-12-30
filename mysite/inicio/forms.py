@@ -19,4 +19,4 @@ class solicitudPrestamo(forms.Form):
     tiempo=forms.ChoiceField(required=True, label="Tiempo en meses en el que pretendes pagar:",choices=opc)
 
     class Meta:
-        field=("id","codigo_usuario","descripcion","monto","tiempo")
+        field=("id","codigo_usuario","descripcion","monto","tiempo","estado")

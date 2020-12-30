@@ -134,7 +134,13 @@ class tarjeta(forms.Form):
     class Meta:
         fields=("id","codigo_usuario","marca","limite","moneda","puntos","porcentaje")
 
+class autorizar(forms.Form):
+    opc=(("0","PENDIENTE"),("1","AUTORIZAR"),("2","DENEGAR"))
+    id=forms.IntegerField(required=True,label="Código de solicitud: ")
+    estado=forms.ChoiceField(required=True,label="Cambiar estado de la solicitud a:", choices=opc)
 
+    class Meta:
+        fields=("id","codigo_usuario","descripcion","monto","tiempo","estado")
 
 
 

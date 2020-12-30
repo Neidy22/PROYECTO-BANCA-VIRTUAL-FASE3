@@ -29,5 +29,6 @@ urlpatterns = [
     path('nuevaChequera/',views.generarChequera),
     path('depositar/', views.depositar),
     path('nuevaTarjeta/', views.generarTarjeta),
+    path('autorizarP/', views.autorizarPrestamo),
 
 ]

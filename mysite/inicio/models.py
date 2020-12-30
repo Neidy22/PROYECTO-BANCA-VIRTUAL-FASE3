@@ -142,11 +142,25 @@ class Prestamo(models.Model):
     monto = models.FloatField(blank=True, null=True)
     modalidad_pago = models.IntegerField(blank=True, null=True)
     interes = models.FloatField(blank=True, null=True)
+    total = models.FloatField(blank=True, null=True)
+    pagado = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'prestamo'
         unique_together = (('id', 'codigo_usuario'),)
+
+
+class Solicitudprestamo(models.Model):
+    codigo_usuario = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='codigo_usuario', blank=True, null=True)
+    descripcion = models.CharField(max_length=250, blank=True, null=True)
+    monto = models.FloatField(blank=True, null=True)
+    tiempo = models.IntegerField(blank=True, null=True)
+    estado = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'solicitudprestamo'
 
 
 class Tarjetacredito(models.Model):
