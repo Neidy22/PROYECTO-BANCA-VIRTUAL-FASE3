@@ -65,3 +65,31 @@ font:600;
 font-style:italic;
 
 }
+
+.log{
+background-color:#53c79840;
+border-style:inset;
+margin-top:100px;
+width:60%;
+margin-left:20%;
+color:#ffffff;
+font-size:larger;
+font:600;
+font-style:italic;
+text-align:rigth
+
+}
+
+table{
+text-align:center;
+border:1px solid #0c9c9f;
+
+}
+td{
+border:1px solid #288b8d;
+}
+th{
+border:2px solid #288b8d;
+background-color:#0c9c9f20;
+
+}

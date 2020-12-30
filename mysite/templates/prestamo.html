@@ -1,0 +1,43 @@
+{% extends 'baseFondo.html' %}
+{% block content %}
+<div class="log">
+    <h1>TABLA DE COTIZACIONES</h1>
+            <table class="tbl">
+                <tr>
+                    <th>12m sin interés</th>
+                    <th>12m con interés</th>
+                    <th>24m sin interés</th>
+                    <th>24m con interés</th>
+                    <th>36m sin interés</th>
+                    <th>36m con interés</th>
+                    <th>48m sin interés</th>
+                    <th>48m con interés</th>
+                </tr>
+
+
+
+                <tr>
+            {% for a in list%}
+                    <td>{{a}}</td>
+            {% endfor%}
+                </tr>
+
+            </table>
+        </div>
+
+
+    <form method="POST">
+        <h1>SOLICITAR PRESTAMO</h1>
+        <div class="login" >
+             {{mensaje}}
+            {{form.as_p}}
+            {% csrf_token%}
+
+        <button type="submit" id="btn">Solicitar</button>
+
+        </div>
+
+        <a href="../index/" class="link">SALIR</a>
+
+    </form>
+{% endblock %}

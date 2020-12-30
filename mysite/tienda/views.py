@@ -165,6 +165,9 @@ class Home(TemplateView):
 
 
 
+
+
+
 def calculos(marca,monto,moneda,ficha):
     puntos=0
     porcentajes=0

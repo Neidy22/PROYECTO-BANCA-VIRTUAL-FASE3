@@ -22,3 +22,4 @@ class compra(forms.Form):
 
     class Meta:
         field=("id","fecha","descripcion","monto","codigo_tarjeta","moneda","puntos","cashback")
+
