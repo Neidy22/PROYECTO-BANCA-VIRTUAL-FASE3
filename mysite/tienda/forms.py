@@ -11,11 +11,13 @@ class Persona(forms.Form):
 
 
 class compra(forms.Form):
+
     opc=(("Q","QUETZALES"),("$","DÓLARES"))
     fecha=forms.DateField(label="Ingresa la fecha de compra en año-mes-día:")
     descripcion=forms.CharField(required=True, label="Descripción de la compra: ")
     monto=forms.FloatField(required=True,label="Monto total de la compra: ")
-    codigo_tarjeta=forms.IntegerField(required=True, label="Introduce el código de tarjeta:")
+    #codigo_tarjeta=forms.ChoiceField(widget=forms.Select(),choices=[])
+    codigo_tarjeta=forms.IntegerField(required=True, label="Código de tarjeta:")
     moneda=forms.ChoiceField(required=True,label="Monto total en:",choices=opc)
 
     class Meta:
