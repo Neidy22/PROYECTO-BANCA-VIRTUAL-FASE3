@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from inicio.views import Home,Index,Admin,Empre,soli,pagoAutomatico, pagoAdelantado, estadoCuenta
+from inicio.views import Home,Index,Admin,Empre,soli,pagoAutomatico, pagoAdelantado, estadoCuenta, pagarAdelantado, agregarProveedor,pagarProveedor
 
 urlpatterns = [
 
@@ -27,7 +27,10 @@ urlpatterns = [
     path('empresarial', Empre.enviar, name='empresarial'),
     path('solicitud/', soli.solicitud, name='solicitud'),
     path('pagoA/', pagoAutomatico.pagar, name='pagoA'),
-    path('pagoAde/', pagoAdelantado.adelantar, name='pagoAde'),
-    path('estadoC/', estadoCuenta.enviar, name='estadoC')
+    #path('pagoAde/', pagoAdelantado.adelantar, name='pagoAde'),
+    path('pagoAde/', pagarAdelantado.adelantar, name='pagoAde'),
+    path('estadoC/', estadoCuenta.enviar, name='estadoC'),
+    path('agregarProve/', agregarProveedor.agregar, name='agregarProve/'),
+    path('pagarProve/', pagarProveedor.pagar, name='pagarProve/'),
 
 ]

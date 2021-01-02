@@ -1,0 +1,14 @@
+{% extends 'baseForms.html' %}
+{% block content %}
+    <form method="POST">
+        <h1>AGREGAR PROOVEEDOR</h1>
+        <div class="login" >
+            {{mensaje}}
+            {{form.as_p}}
+            {% csrf_token%}
+        <button type="submit" id="btn">Agregar</button>
+        </div>
+        <a href="/index/" class="link">REGRESAR</a>
+
+    </form>
+{% endblock %}

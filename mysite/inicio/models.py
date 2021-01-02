@@ -138,7 +138,10 @@ class Deposito(models.Model):
 
 
 class Pagoadelantado(models.Model):
-    id_pagoauto = models.ForeignKey('Pagoautomatico', models.DO_NOTHING, db_column='id_pagoAuto', blank=True, null=True)  # Field name made lowercase.
+    codigo_usuario = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='codigo_usuario', blank=True, null=True)
+    tipo_cuenta = models.IntegerField(blank=True, null=True)
+    id_cuenta = models.IntegerField(blank=True, null=True)
+    id_prestamo = models.ForeignKey('Prestamo', models.DO_NOTHING, db_column='id_prestamo', blank=True, null=True)
     fecha = models.DateField(blank=True, null=True)
     cuota = models.FloatField(blank=True, null=True)
     restante = models.FloatField(blank=True, null=True)
@@ -162,6 +165,17 @@ class Pagoautomatico(models.Model):
         db_table = 'pagoautomatico'
 
 
+class Planilla(models.Model):
+    id_empresa = models.ForeignKey(Clienteempresarial, models.DO_NOTHING, db_column='id_empresa', blank=True, null=True)
+    tipo_cuenta = models.IntegerField(blank=True, null=True)
+    id_cuenta = models.IntegerField(blank=True, null=True)
+    periodo = models.CharField(max_length=50, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'planilla'
+
+
 class Prestamo(models.Model):
     codigo_usuario = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='codigo_usuario')
     monto = models.FloatField(blank=True, null=True)
@@ -174,6 +188,20 @@ class Prestamo(models.Model):
         managed = False
         db_table = 'prestamo'
         unique_together = (('id', 'codigo_usuario'),)
+
+
+class Proveedor(models.Model):
+    id_cliente = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='id_cliente', blank=True, null=True)
+    id_cuenta_cliente = models.IntegerField(blank=True, null=True)
+    nombre = models.CharField(max_length=100, blank=True, null=True)
+    tipo_cuenta = models.IntegerField(blank=True, null=True)
+    id_cuenta = models.IntegerField(blank=True, null=True)
+    monto = models.FloatField(blank=True, null=True)
+    periodo_pago = models.CharField(max_length=50, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'proveedor'
 
 
 class Solicitudprestamo(models.Model):

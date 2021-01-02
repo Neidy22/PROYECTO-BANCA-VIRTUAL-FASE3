@@ -86,6 +86,7 @@ border:1px solid #0c9c9f;
 postition:center;
 position:absolute,
 left=0;
+margin:auto;
 
 }
 td{
@@ -95,4 +96,19 @@ th{
 border:2px solid #288b8d;
 background-color:#0c9c9f20;
 
+}
+
+b{
+color:#98dcd7;
+}
+h2{
+text-align:center;
+color:#5dc1b9;
+font-size:xx-large;
+font:400px;
+font-style:oblique;
+
+}
+p,h2,b{
+text-align:center;
 }
